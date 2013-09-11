@@ -91,19 +91,16 @@ public class Transformation {
         out.write(max + "\n");
         for(int i = 0; i < pixels.length; i++){
             for(int j = 0; j < pixels[0].length; j++){
-                if(pixels[i][j] != null)
-                {
-                    int tempRed = ((pixels[i][j].getRed() + pixels[i][j].getBlue() + pixels[i][j].getGreen()) / 3);
-                    int tempGreen = ((pixels[i][j].getRed() + pixels[i][j].getBlue() + pixels[i][j].getGreen()) / 3);
-                    int tempBlue = ((pixels[i][j].getRed() + pixels[i][j].getBlue() + pixels[i][j].getGreen()) / 3);
-                    
-                    pixels[i][j].setRed(tempRed);
-                    pixels[i][j].setGreen(tempGreen);
-                    pixels[i][j].setBlue(tempBlue);
-                    out.write(pixels[i][j].getRed() + " ");
-                    out.write(pixels[i][j].getGreen() + " ");
-                    out.write(pixels[i][j].getBlue() + " ");
-                }
+                int aveRed = ((pixels[i][j].getRed() + pixels[i][j].getBlue() + pixels[i][j].getGreen()) / 3);
+                int aveGreen = ((pixels[i][j].getRed() + pixels[i][j].getBlue() + pixels[i][j].getGreen()) / 3);
+                int aveBlue = ((pixels[i][j].getRed() + pixels[i][j].getBlue() + pixels[i][j].getGreen()) / 3);
+
+                pixels[i][j].setRed(aveRed);
+                pixels[i][j].setGreen(aveGreen);
+                pixels[i][j].setBlue(aveBlue);
+                out.write(pixels[i][j].getRed() + " ");
+                out.write(pixels[i][j].getGreen() + " ");
+                out.write(pixels[i][j].getBlue() + " ");
             }     
         }
         out.close();   
@@ -112,16 +109,18 @@ public class Transformation {
     
     public static void emboss (Pixel[][] pixels, String fileName, String magicNumber, int max, int imgHeight, int imgWidth) throws Exception {
         try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));) {
-
         out.write(magicNumber + "\n");
         out.write(pixels[0].length + " ");
         out.write(pixels.length + "\n");
         out.write(max + "\n");
         for(int i = pixels.length-1; i >= 0; i--){
             for(int j = pixels[0].length-1; j >= 0; j--){
-                if(pixels[i][j] != null)
-                {
                     //check if in first row or column
+//                    if(i == 0 || j == 0){
+//                                                pixels[i][j].setRed(128);
+//                        pixels[i][j].setGreen(128);
+//                        pixels[i][j].setBlue(128);
+//                    }
                     if(i > 0 && j > 0) {
                         int redDiff = pixels[i][j].getRed() - pixels[i-1][j-1].getRed();
                         int blueDiff = pixels[i][j].getBlue() - pixels[i-1][j-1].getBlue();
@@ -151,10 +150,9 @@ public class Transformation {
                     }
                     else {
                         pixels[i][j].setRed(128);
-                        pixels[i][j].setBlue(128);
                         pixels[i][j].setGreen(128);
+                        pixels[i][j].setBlue(128);
                     }
-                }
             }     
         }
         for(int i = 0; i < pixels.length; i++){
