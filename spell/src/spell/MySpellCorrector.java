@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package spellImpl;
+package spell;
 
 import java.io.IOException;
 
 /**
  *
- * @author nortond
+ * @author dallasnorton
  */
-public class SpellCorector implements spell.SpellCorrector{
+public class MySpellCorrector implements SpellCorrector {
 
     @Override
     public void useDictionary(String dictionaryFileName) throws IOException {
