@@ -17,6 +17,10 @@ public class MyNode implements Trie.Node {
         word = "";
     }
 
+    
+    public void add(String word) {
+        
+    }
     /**
      * @return the count
      */
@@ -31,6 +35,10 @@ public class MyNode implements Trie.Node {
         this.count = count;
     }
 
+//    public void addChild() {
+//        
+//    }
+    
     @Override
     public int getValue() {
         return count;

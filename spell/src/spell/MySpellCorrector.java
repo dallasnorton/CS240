@@ -1,20 +1,32 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package spell;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
-/**
- *
- * @author dallasnorton
- */
 public class MySpellCorrector implements SpellCorrector {
 
+    private MyTrie tri = new MyTrie();
+    
+    public MySpellCorrector() {
+        // create trie
+        tri = new MyTrie();
+    }
+    
     @Override
     public void useDictionary(String dictionaryFileName) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {        
+            Scanner sc = new Scanner(new File(dictionaryFileName));
+            while(sc.hasNext()){
+                tri.add(sc.next());
+                System.out.println(tri.toString());
+            }
+            sc.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("USAGE 2: java SpellCorrector " + e);
+        }
     }
 
     @Override
