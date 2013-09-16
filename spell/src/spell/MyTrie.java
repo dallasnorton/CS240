@@ -7,15 +7,18 @@ public class MyTrie implements Trie{
     private int wordCount = 0; // increase word count after word insertion
     private int nodeCount = 1; // increase node count after node insertion
     private MyNode root = null;
+    private MyNode pointer = null;
     
     public MyTrie (MyNode node) {
         root = node;
+        pointer = node;
         nodeCount = 1;
         wordCount = 0;
         
     }
     public MyTrie () {
         root = new MyNode();
+        pointer = new MyNode();
         nodeCount = 1;
         wordCount = 0;
     }
@@ -27,22 +30,26 @@ public class MyTrie implements Trie{
 
     @Override
     public Node find(String word) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return root.find(word.toLowerCase());
     }
 
     @Override
     public int getWordCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return wordCount;
     }
 
     @Override
     public int getNodeCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return wordCount;
     }
 
+    public MyNode getPointer() {
+        return pointer;
+    }
+    
     @Override
     public String toString() {
-        return "MyTrie{" + "wordCount=" + wordCount + ", nodeCount=" + nodeCount + ", root=" + root + '}';
+        return "MyTrie{" + "wordCount=" + wordCount + ", nodeCount=" + nodeCount + ", root=" + root + ", pointer=" + pointer + '}';
     }
 
     public class MyNode implements Node {
@@ -77,10 +84,31 @@ public class MyTrie implements Trie{
                 if(count == 0){
                     wordCount++;
                 }
-                setCount(count++);
+                count++;
             }
         }
 
+        public MyNode find(String word) {
+            if(!word.isEmpty()){
+                StringBuilder sb = new StringBuilder(word);
+                int index = sb.charAt(0) - 'a';
+                if(alph[index] != null){
+                    sb.deleteCharAt(0);
+                    return alph[index].find(sb.toString());
+                }
+                else{
+                    return null;
+                }
+            }
+            else{
+                if(this.getCount() > 0){
+                    return this;
+                }
+                else{
+                    return null;
+                }
+            }
+        }
         /**
          * @return the count
          */

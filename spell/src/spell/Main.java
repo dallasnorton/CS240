@@ -23,9 +23,9 @@ public class Main {
                 SpellCorrector corrector = new MySpellCorrector();
 
                 corrector.useDictionary(dictionaryFileName);
-//                String suggestion = corrector.suggestSimilarWord(inputWord);
+                String suggestion = corrector.suggestSimilarWord(inputWord);
 
-//                System.out.println("Suggestion is: " + suggestion);
+                System.out.println("Suggestion is: " + suggestion);
             }
             catch(Exception e){
                 System.out.println("USAGE 1: java SpellCorrector " + e);
