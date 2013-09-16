@@ -1,6 +1,7 @@
 package spell;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class MyTrie implements Trie{
 
@@ -29,7 +30,7 @@ public class MyTrie implements Trie{
     }
 
     @Override
-    public Node find(String word) {
+    public MyNode find(String word) {
         return root.find(word.toLowerCase());
     }
 
@@ -51,6 +52,42 @@ public class MyTrie implements Trie{
     public String toString() {
         return "MyTrie{" + "wordCount=" + wordCount + ", nodeCount=" + nodeCount + ", root=" + root + ", pointer=" + pointer + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + this.wordCount;
+        hash = 11 * hash + this.nodeCount;
+        hash = 11 * hash + Objects.hashCode(this.root);
+        hash = 11 * hash + Objects.hashCode(this.pointer);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MyTrie other = (MyTrie) obj;
+        if (this.wordCount != other.wordCount) {
+            return false;
+        }
+        if (this.nodeCount != other.nodeCount) {
+            return false;
+        }
+        if (!Objects.equals(this.root, other.root)) {
+            return false;
+        }
+        if (!Objects.equals(this.pointer, other.pointer)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
     public class MyNode implements Node {
 
@@ -160,5 +197,36 @@ public class MyTrie implements Trie{
         public String toString() {
             return "MyNode{" + "count=" + count + ", word=" + word + ", alph=" + Arrays.toString(alph) + '}';
         }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 47 * hash + this.count;
+            hash = 47 * hash + Objects.hashCode(this.word);
+            hash = 47 * hash + Arrays.deepHashCode(this.alph);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final MyNode other = (MyNode) obj;
+            if (this.count != other.count) {
+                return false;
+            }
+            if (!Objects.equals(this.word, other.word)) {
+                return false;
+            }
+            if (!Arrays.deepEquals(this.alph, other.alph)) {
+                return false;
+            }
+            return true;
+        }
+        
     }
 }

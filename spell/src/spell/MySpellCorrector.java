@@ -21,7 +21,7 @@ public class MySpellCorrector implements SpellCorrector {
             Scanner sc = new Scanner(new File(dictionaryFileName));
             while(sc.hasNext()){
                 tri.add(sc.next());
-                System.out.println(tri.toString());
+//                System.out.println(tri.toString());
             }
             sc.close();
         }
@@ -63,12 +63,32 @@ public class MySpellCorrector implements SpellCorrector {
     }
     
     public String checkAlteredWords(Set<String> words) {
+        String suggest = null;
+        int currentCount = 0;
+        
+        MyTrie.MyNode node = null;
         for (String str : words) {
-            if(tri.find(str) != null){
-                return str;
+            node = tri.find(str);
+            if(node != null){
+                if(node.getCount() > currentCount) {
+                    suggest = str;
+                    currentCount = node.getCount();
+                }
+                else if(node.getCount() == currentCount && suggest.compareTo(str) > 0) {
+                    suggest = str;
+                    currentCount = node.getCount();
+                }
             }
         }
-        return null;
+                
+                
+//        for (String str : words) {
+//            if(tri.find(str) != null){
+//                suggest = str;
+//            }
+//            System.out.println(suggest);
+//        }
+        return suggest;
     }
     
     public Set<String> oneEditDistance(String inputWord) {
