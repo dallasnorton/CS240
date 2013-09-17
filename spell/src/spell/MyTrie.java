@@ -38,7 +38,7 @@ public class MyTrie implements Trie{
 
     @Override
     public int getNodeCount() {
-        return wordCount;
+        return nodeCount;
     }
     
     @Override
@@ -96,12 +96,14 @@ public class MyTrie implements Trie{
         }
 
         public void add(String word) {
+//            System.out.println(word);
             if(!word.isEmpty()){
                 StringBuilder sb = new StringBuilder(word);
                 int index = sb.charAt(0) - 'a';
                 if (alph[index] == null){
                     alph[index] = new MyNode();
                     nodeCount++;
+//                    System.out.println(nodeCount);
                 }
                 sb.deleteCharAt(0);
                 alph[index].add(sb.toString());
