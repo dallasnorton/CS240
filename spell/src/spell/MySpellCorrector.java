@@ -42,16 +42,16 @@ public class MySpellCorrector implements SpellCorrector {
             return suggest;
         }
         
+        Set<String> newWords = new HashSet<String>();
+        
         for (String word : words) {
             for(String newWord : oneEditDistance(word)){
-                words.add(newWord);
+                newWords.add(newWord);
             }
-//            words = oneEditDistance(word);
         }
-  
 
-        System.out.println(words.toString());
-        suggest = checkAlteredWords(words);
+//        System.out.println(newWords.toString());
+        suggest = checkAlteredWords(newWords);
         if(suggest != null){
             return suggest;
         }
@@ -119,9 +119,6 @@ public class MySpellCorrector implements SpellCorrector {
         String[] words = new String[inputWord.length()];
         for (int i = 0; i < words.length; i++) {
             words[i] = inputWord.substring(0, i) + inputWord.substring(i+1);
-//            System.out.println(inputWord.substring(0, i));
-//            System.out.println(inputWord.substring(i+1));
-//            System.out.println("New Word");
         }
         return words;
     }
