@@ -8,18 +8,15 @@ public class MyTrie implements Trie{
     private int wordCount = 0; // increase word count after word insertion
     private int nodeCount = 1; // increase node count after node insertion
     private MyNode root = null;
-    private MyNode pointer = null;
     
     public MyTrie (MyNode node) {
         root = node;
-        pointer = node;
         nodeCount = 1;
         wordCount = 0;
         
     }
     public MyTrie () {
         root = new MyNode();
-        pointer = new MyNode();
         nodeCount = 1;
         wordCount = 0;
     }
@@ -43,14 +40,10 @@ public class MyTrie implements Trie{
     public int getNodeCount() {
         return wordCount;
     }
-
-    public MyNode getPointer() {
-        return pointer;
-    }
     
     @Override
     public String toString() {
-        return "MyTrie{" + "wordCount=" + wordCount + ", nodeCount=" + nodeCount + ", root=" + root + ", pointer=" + pointer + '}';
+        return "MyTrie{" + "wordCount=" + wordCount + ", nodeCount=" + nodeCount + ", root=" + root + '}';
     }
 
     @Override
@@ -59,7 +52,6 @@ public class MyTrie implements Trie{
         hash = 11 * hash + this.wordCount;
         hash = 11 * hash + this.nodeCount;
         hash = 11 * hash + Objects.hashCode(this.root);
-        hash = 11 * hash + Objects.hashCode(this.pointer);
         return hash;
     }
 
@@ -79,9 +71,6 @@ public class MyTrie implements Trie{
             return false;
         }
         if (!Objects.equals(this.root, other.root)) {
-            return false;
-        }
-        if (!Objects.equals(this.pointer, other.pointer)) {
             return false;
         }
         return true;

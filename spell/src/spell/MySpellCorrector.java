@@ -17,49 +17,46 @@ public class MySpellCorrector implements SpellCorrector {
     
     @Override
     public void useDictionary(String dictionaryFileName) throws IOException {
-        try {        
-            Scanner sc = new Scanner(new File(dictionaryFileName));
-            while(sc.hasNext()){
-                tri.add(sc.next());
-//                System.out.println(tri.toString());
-            }
-            sc.close();
+       
+        Scanner sc = new Scanner(new File(dictionaryFileName));
+        while(sc.hasNext()){
+            tri.add(sc.next());
         }
-        catch(Exception e){
-            e.printStackTrace();
-            System.out.println("USAGE 2: java SpellCorrector " + e);
-        }
+//            System.out.println(tri.toString());
+        sc.close();
+
     }
 
     @Override
     public String suggestSimilarWord(String inputWord) throws NoSimilarWordFoundException {
-        try {
-            if(inputWord == ""){
-                return null;
-            }
-            if(tri.find(inputWord) != null){
-                return inputWord;
-            }
-            Set<String> words = oneEditDistance(inputWord);
-            String suggest = checkAlteredWords(words);
-            if(suggest != null){
-                return suggest;
-            }
-            
-            for (String word : words) {
-                words = oneEditDistance(word);
-            }
-            suggest = checkAlteredWords(words);
-            if(suggest != null){
-                return suggest;
-            }
+        if(inputWord == ""){
+            return null;
         }
-        catch(Exception e) {
-            e.printStackTrace();
-            System.out.println("USAGE 2: java SpellCorrector " + e);            
+        if(tri.find(inputWord) != null){
+            return inputWord;
         }
-//                throw new NoSimilarWordFoundException;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        Set<String> words = oneEditDistance(inputWord);
+        String suggest = checkAlteredWords(words);
+        if(suggest != null){
+            return suggest;
+        }
+        
+        for (String word : words) {
+            for(String newWord : oneEditDistance(word)){
+                words.add(newWord);
+            }
+//            words = oneEditDistance(word);
+        }
+  
+
+        System.out.println(words.toString());
+        suggest = checkAlteredWords(words);
+        if(suggest != null){
+            return suggest;
+        }
+
+        throw new NoSimilarWordFoundException();
     }
     
     public String checkAlteredWords(Set<String> words) {
@@ -80,18 +77,11 @@ public class MySpellCorrector implements SpellCorrector {
                 }
             }
         }
-                
-                
-//        for (String str : words) {
-//            if(tri.find(str) != null){
-//                suggest = str;
-//            }
-//            System.out.println(suggest);
-//        }
         return suggest;
     }
     
     public Set<String> oneEditDistance(String inputWord) {
+
         Set<String> words = new HashSet<String>();
 
         for (String str : deletions(inputWord)){
@@ -109,7 +99,22 @@ public class MySpellCorrector implements SpellCorrector {
 
         return words;
     }
-    
+
+    public  Set<String> oneEditDistance(Set<String> origWords) {
+        Set<String> words = new HashSet<String>();
+
+        for (String word : origWords) {
+            if (word.equals("")){
+                continue;
+            }
+            for (String s : oneEditDistance(word)) {
+                words.add(s);
+            }
+        }
+
+        return words;
+    }
+        
     public String[] deletions(String inputWord) {
         String[] words = new String[inputWord.length()];
         for (int i = 0; i < words.length; i++) {
@@ -122,11 +127,18 @@ public class MySpellCorrector implements SpellCorrector {
     }
 
     public String[] transpositions(String inputWord) {
-        String[] words = new String[inputWord.length() - 1];
-        for (int i = 0; i < words.length; i++) {
-            words[i] = inputWord.substring(0, i) + inputWord.charAt(i+1) + inputWord.charAt(i) + inputWord.substring(i+2);
+//            System.out.println(inputWord.length());
+        if(inputWord.length() > 0){
+            
+            String[] words = new String[inputWord.length() - 1];
+            for (int i = 0; i < words.length; i++) {
+                words[i] = inputWord.substring(0, i) + inputWord.charAt(i+1) + inputWord.charAt(i) + inputWord.substring(i+2);
+            }
+            return words;
         }
-        return words;
+        else {
+            return new String [0];
+        }
     }
 
     public String[] alterations(String inputWord) {
@@ -147,7 +159,7 @@ public class MySpellCorrector implements SpellCorrector {
 
     public String[] insertions(String inputWord) {
         String[] words = new String[(inputWord.length() + 1) * 26];
-        System.out.println(inputWord.length());
+//        System.out.println(inputWord.length());
         for (int i = 0; i <= inputWord.length(); i++) {
             int j = 0;
             for (letter l : letter.values()) {

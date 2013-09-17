@@ -14,22 +14,17 @@ public class Main {
 	 * as the second argument.
 	 */
 	public static void main(String[] args) throws NoSimilarWordFoundException, IOException {
-	    try{
-                String dictionaryFileName = args[0];
-                String inputWord = args[1];
-                /**
-                 * Create an instance of your corrector here
-                 */
-                SpellCorrector corrector = new MySpellCorrector();
+            String dictionaryFileName = args[0];
+            String inputWord = args[1];
+            /**
+             * Create an instance of your corrector here
+             */
+            SpellCorrector corrector = new MySpellCorrector();
 
-                corrector.useDictionary(dictionaryFileName);
-                String suggestion = corrector.suggestSimilarWord(inputWord);
+            corrector.useDictionary(dictionaryFileName);
+            String suggestion = corrector.suggestSimilarWord(inputWord);
 
-                System.out.println("Suggestion is: " + suggestion);
-            }
-            catch(Exception e){
-                System.out.println("USAGE 1: java SpellCorrector " + e);
-            }
+            System.out.println("Suggestion is: " + suggestion);
 	}
 
 }
