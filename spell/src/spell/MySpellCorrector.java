@@ -22,16 +22,15 @@ public class MySpellCorrector implements SpellCorrector {
         while(sc.hasNext()){
             tri.add(sc.next());
         }
-            System.out.println(tri.toString());
         sc.close();
 
     }
 
     @Override
     public String suggestSimilarWord(String inputWord) throws NoSimilarWordFoundException {
-        if(inputWord == ""){
-            return null;
-        }
+//        if(inputWord == ""){
+//            return null;
+//        }
         if(tri.find(inputWord) != null){
             return inputWord;
         }
@@ -49,8 +48,6 @@ public class MySpellCorrector implements SpellCorrector {
                 newWords.add(newWord);
             }
         }
-
-//        System.out.println(newWords.toString());
         suggest = checkAlteredWords(newWords);
         if(suggest != null){
             return suggest;
