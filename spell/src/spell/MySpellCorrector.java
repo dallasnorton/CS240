@@ -22,7 +22,7 @@ public class MySpellCorrector implements SpellCorrector {
         while(sc.hasNext()){
             tri.add(sc.next());
         }
-//            System.out.println(tri.toString());
+            System.out.println(tri.toString());
         sc.close();
 
     }
