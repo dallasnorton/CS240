@@ -23,19 +23,25 @@ public abstract class Listem {
         //m.matches(); if the regexp matches the string exactly **file name matching**
         //m.find(); searches for any substring of that string that matches the string  ****
         
-        Pattern p = Pattern.compile(selectionPattern);
-        Matcher m = p.matcher(current);
+        Pattern p = Pattern.compile(filePattern);
+        System.out.println(filePattern);
+        Matcher m = p.matcher(current.getName());
+        System.out.println(current.getName());
+        
         
         for(File childFile : current.listFiles()){
-            if(childFile.isDirectory()){
-                if(isRecursive){
-                    searchDir(childFile, filePattern, selectionPattern, isRecursive);
-                }
+//            System.out.println(childFile.getName());
+//            System.out.println(childFile.isFile());
+            if(childFile.isDirectory() && isRecursive){
+                searchDir(childFile, filePattern, selectionPattern, isRecursive);
             }
             if(childFile.isFile()){
-                m.matches(filePattern);
-//                does this file match my file pattern?                
-                scanFile(current);
+//                does this file match my file pattern?    
+                System.out.println("look here");
+//                System.out.println(m.matches());
+                if(m.matches()){
+                    scanFile(current);
+                }            
             }
         }        
     }

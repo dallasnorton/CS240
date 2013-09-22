@@ -27,7 +27,8 @@ public class MyLineCounter extends Listem implements LineCounter{
             Map<File, Integer> lineCounterMap = new HashMap();
 
             searchDir(directory, fileSelectionPattern, null, recursive);
-            lineCount();
+            System.out.println("did i get here?");
+//            lineCount();
         }
         catch(Exception e){
            System.out.println("countLines method error");
@@ -36,15 +37,16 @@ public class MyLineCounter extends Listem implements LineCounter{
         return lineCounterMap;
     }
     
-    public Map lineCount(){
-        
-//        searchDir(file, pattern, null, isRecursive);
-        
-        return lineCounterMap;
-    }
+//    public Map lineCount(){
+//        
+////        searchDir(file, pattern, null, isRecursive);
+//        
+//        return lineCounterMap;
+//    }
 
     @Override
     public void scanFile(File currentFile) {
+        System.out.println("scan file");
         try {
             Scanner sc = new Scanner(currentFile);
 
@@ -52,7 +54,6 @@ public class MyLineCounter extends Listem implements LineCounter{
                 incrementCount();
                 sc.nextLine();
             }
-
             lineCounterMap.put(currentFile, getCount());
         }
         catch (Exception e){
