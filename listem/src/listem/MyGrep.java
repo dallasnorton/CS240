@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  *
@@ -29,12 +30,25 @@ public class MyGrep extends Listem implements Grep{
         
         
         searchDir(directory, fileSelectionPattern, substringSelectionPattern, recursive);
-        
         return grepMap;
     }
 
     @Override
-    public void scanFile(File current) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void scanFile(File currentFile) {
+        System.out.println("scan file");
+        System.out.println(currentFile.getName());
+        try {
+            Scanner sc = new Scanner(currentFile);
+
+            while(sc.hasNext()){
+                incrementCount();
+                sc.nextLine();
+            }
+//            grepMap.put(currentFile, getCount());
+        }
+        catch (Exception e){
+            System.out.println("scanFile method LineCounter");
+            e.printStackTrace();
+        }
     }
 }

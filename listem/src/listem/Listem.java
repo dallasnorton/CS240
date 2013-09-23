@@ -24,12 +24,16 @@ public abstract class Listem {
         //m.find(); searches for any substring of that string that matches the string  ****
         
         Pattern p = Pattern.compile(filePattern);
-        System.out.println(filePattern);
-        Matcher m = p.matcher(current.getName());
-        System.out.println(current.getName());
+//        System.out.println(filePattern);
+//        System.out.println(p.toString());
+
         
         
         for(File childFile : current.listFiles()){
+            
+                    Matcher m = p.matcher(childFile.getName());
+//        System.out.println(childFile.getName());
+//        System.out.println(m.toString());
 //            System.out.println(childFile.getName());
 //            System.out.println(childFile.isFile());
             if(childFile.isDirectory() && isRecursive){
