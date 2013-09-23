@@ -15,7 +15,7 @@ public abstract class Listem {
         count = 0;
     }
     
-    public abstract void scanFile(File current);
+    public abstract void scanFile(File current, String filePattern, String selectionPattern);
     
     public void searchDir(File current, String filePattern, String selectionPattern, Boolean isRecursive){
         //Patern p = Pattern.compile(Regexp string goes here);
@@ -24,27 +24,16 @@ public abstract class Listem {
         //m.find(); searches for any substring of that string that matches the string  ****
         
         Pattern p = Pattern.compile(filePattern);
-//        System.out.println(filePattern);
-//        System.out.println(p.toString());
+        
+        for(File childFile : current.listFiles()){   
+            Matcher m = p.matcher(childFile.getName());
 
-        
-        
-        for(File childFile : current.listFiles()){
-            
-                    Matcher m = p.matcher(childFile.getName());
-//        System.out.println(childFile.getName());
-//        System.out.println(m.toString());
-//            System.out.println(childFile.getName());
-//            System.out.println(childFile.isFile());
             if(childFile.isDirectory() && isRecursive){
                 searchDir(childFile, filePattern, selectionPattern, isRecursive);
             }
             if(childFile.isFile()){
-//                does this file match my file pattern?    
-                System.out.println("look here");
-//                System.out.println(m.matches());
                 if(m.matches()){
-                    scanFile(current);
+                    scanFile(childFile, filePattern, selectionPattern);
                 }            
             }
         }        

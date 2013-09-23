@@ -37,7 +37,7 @@ public class MyLineCounter extends Listem implements LineCounter{
     }
 
     @Override
-    public void scanFile(File currentFile) {
+    public void scanFile(File currentFile, String filePattern, String selectionPattern) {
         System.out.println("scan file");
         System.out.println(currentFile.getName());
         try {

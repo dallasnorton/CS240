@@ -21,7 +21,7 @@ public class RunGrep {
 		String filePattern = "";
 		String searchPattern = "";
 		boolean recursive = false;
-		
+
 		if (args.length == 3) {
 			recursive = false;
 			dirName = args[0];
