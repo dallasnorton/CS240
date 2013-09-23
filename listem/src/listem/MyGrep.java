@@ -24,22 +24,21 @@ public class MyGrep extends Listem implements Grep{
     
     public MyGrep(){
         super();
-        grepMap = new TreeMap();
+        grepMap = new HashMap();
     }
     
     @Override
     public Map<File, List<String>> grep(File directory, String fileSelectionPattern, String substringSelectionPattern, boolean recursive) {
-        setCount(0);
-        Map<File, List<String>> grepMap = new TreeMap();
+        grepMap = new HashMap();
         
         searchDir(directory, fileSelectionPattern, substringSelectionPattern, recursive);
+//        System.out.println(grepMap.toString());
         return grepMap;
     }
 
     @Override
     public void scanFile(File currentFile, String filePattern, String selectionPattern) {
-        System.out.println("File: " + currentFile.getName());
-//        System.out.println(selectionPattern);
+//        System.out.println("File: " + currentFile.getName());
         try {
             Pattern p = Pattern.compile(selectionPattern);
 
@@ -49,18 +48,18 @@ public class MyGrep extends Listem implements Grep{
             while(sc.hasNext()){
                 tempStr = sc.nextLine();
                 Matcher m = p.matcher(tempStr);
-                System.out.println(tempStr);
+//                System.out.println(tempStr);
                 if(m.find()){
-                    System.out.println("found a word match");
+//                    System.out.println("found a word match");
                     myList.add(tempStr);
                 }
             }
-            System.out.println(myList.toString());
+//            System.out.println(myList.toString());
             if(!myList.isEmpty()){
               grepMap.put(currentFile, myList);  
             }
 //            grepMap.put(currentFile, myList);
-            System.out.println(grepMap.toString());
+//            System.out.println(grepMap.toString());
         }
         catch (Exception e){
             System.out.println("scanFile method LineCounter");
