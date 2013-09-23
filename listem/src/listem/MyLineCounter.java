@@ -24,10 +24,10 @@ public class MyLineCounter extends Listem implements LineCounter{
     public Map<File, Integer> countLines(File directory, String fileSelectionPattern, boolean recursive) {
         try{
             setCount(0);
-            Map<File, Integer> lineCounterMap = new HashMap();
+            lineCounterMap = new HashMap();
 
             searchDir(directory, fileSelectionPattern, null, recursive);
-            System.out.println("did i get here?");
+//            System.out.println("did i get here?");
         }
         catch(Exception e){
            System.out.println("countLines method error");
