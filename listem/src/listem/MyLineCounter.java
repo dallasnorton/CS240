@@ -41,9 +41,10 @@ public class MyLineCounter extends Listem implements LineCounter{
         System.out.println("scan file");
         System.out.println(currentFile.getName());
         try {
+            setCount(0);
             Scanner sc = new Scanner(currentFile);
 
-            while(sc.hasNext()){
+            while(sc.hasNextLine()){
                 incrementCount();
                 sc.nextLine();
             }
