@@ -1,19 +1,38 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package evilhangman;
 
-/**
- *
- * @author dallasnorton
- */
+import java.io.File;
+import java.util.*;
+
 public class Evilhangman {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        int remainingGuesses = -1;
+        int wordLength = -1;
+        String filePath = null;
+        Set<String> dictionary = new HashSet<String>();
+        String tempDictionaryWord = null;
+        try {
+            filePath = args[0];
+            wordLength = Integer.parseInt(args[1]);
+            remainingGuesses = Integer.parseInt(args[2]);
+
+            if (wordLength < 2 || remainingGuesses < 1 || filePath == null){
+                return;
+            }
+            
+            Scanner sc = new Scanner(new File(filePath)).useDelimiter("\\s+");
+            while(sc.hasNext()){
+                tempDictionaryWord = sc.next();
+                if(tempDictionaryWord.length() == wordLength){
+                    dictionary.add(tempDictionaryWord);
+                }
+            }
+            
+            System.out.println(dictionary.size());
+            
+        } catch (Exception e) {
+            System.out.println("USAGE: java EvilHangman wordLength or guesses incorrect values");
+            return;
+        }
     }
 }
