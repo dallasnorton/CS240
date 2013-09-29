@@ -9,8 +9,7 @@ public class Evilhangman {
         int remainingGuesses = -1;
         int wordLength = -1;
         String filePath = null;
-        Set<String> dictionary = new HashSet<String>();
-        String tempDictionaryWord = null;
+        
         try {
             filePath = args[0];
             wordLength = Integer.parseInt(args[1]);
@@ -20,15 +19,29 @@ public class Evilhangman {
                 return;
             }
             
-            Scanner sc = new Scanner(new File(filePath)).useDelimiter("\\s+");
-            while(sc.hasNext()){
-                tempDictionaryWord = sc.next();
-                if(tempDictionaryWord.length() == wordLength){
-                    dictionary.add(tempDictionaryWord);
-                }
-            }
+            MyEvilHangmanGame hangManGame = new MyEvilHangmanGame();
+            hangManGame.startGame(new File(filePath), wordLength);
             
-            System.out.println(dictionary.size());
+            Scanner in = new Scanner(System.in);
+            while(remainingGuesses > 0){
+                System.out.println("You have " + remainingGuesses + " guess" + (remainingGuesses == 1 ? "" : "es") + " left");
+                System.out.println("Used letters: " + hangManGame.usedLetters.toString());
+                System.out.println("Word: ");
+                System.out.print("Enter guess: ");
+                String charGuess = in.next().toLowerCase();
+                char chr;
+                
+                if (charGuess.length() > 1) {
+                    System.out.println("Please enter one character only.  Please try again.\n");
+                    continue;
+                }
+                else {
+                    chr = charGuess.charAt(0);
+                }
+
+                hangManGame.makeGuess(chr); 
+
+            }
             
         } catch (Exception e) {
             System.out.println("USAGE: java EvilHangman wordLength or guesses incorrect values");
