@@ -116,10 +116,7 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
                                             continue;
                                         }
                                         else{
-                                            largeRightIndex = nextLargeRightIndex;
-                                            entryRightIndex = nextEntryRightIndex;
-                                            nextLargeRightIndex = getNextRightMostIndex(largeStr, guess, largeRightIndex);
-                                            nextEntryRightIndex = getNextRightMostIndex(entryStr, guess, entryRightIndex);
+                                            keepChecking(largeStr, entryStr, largeRightIndex, entryRightIndex, nextLargeRightIndex, nextEntryRightIndex, guess);
                                         }
                                     }
                                 }
@@ -130,6 +127,20 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
             }
         }
         return largestEntry.getValue();
+    }
+    
+    public void keepChecking(String largeStr, String entryStr, int largeRightIndex, int entryRightIndex,int nextLargeRightIndex, int nextEntryRightIndex, char guess){
+        largeRightIndex = nextLargeRightIndex;
+        entryRightIndex = nextEntryRightIndex;
+        nextLargeRightIndex = getNextRightMostIndex(largeStr, guess, largeRightIndex);
+        nextEntryRightIndex = getNextRightMostIndex(entryStr, guess, entryRightIndex);
+        
+        if(true){
+            
+        }
+        else{
+            keepChecking(largeStr, entryStr, largeRightIndex, entryRightIndex, nextLargeRightIndex, nextEntryRightIndex, guess);
+        }
     }
     
     public int getNextRightMostIndex(String str, char guess, int index){
