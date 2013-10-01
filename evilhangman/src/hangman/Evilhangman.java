@@ -9,6 +9,9 @@ public class Evilhangman {
         int remainingGuesses = -1;
         int wordLength = -1;
         String filePath = null;
+        Set<String> tempSet = new TreeSet<String>();
+        String word = "";
+        Evilhangman hangMan = new Evilhangman();
         
         try {
             filePath = args[0];
@@ -25,8 +28,8 @@ public class Evilhangman {
             Scanner in = new Scanner(System.in);
             while(remainingGuesses > 0){
                 System.out.println("You have " + remainingGuesses + " guess" + (remainingGuesses == 1 ? "" : "es") + " left");
-                System.out.println("Used letters: " + hangManGame.usedLetters.toString());
-                System.out.println("Word: ");
+                System.out.println("Used letters: " + hangManGame.getUsedLetters().toString());
+                System.out.println("Word: " + word.toString());
                 System.out.print("Enter guess: ");
                 String charGuess = in.next().toLowerCase();
                 char chr;
@@ -39,13 +42,39 @@ public class Evilhangman {
                     chr = charGuess.charAt(0);
                 }
 
-                hangManGame.makeGuess(chr); 
-
+                try{
+                    tempSet = hangManGame.makeGuess(chr);
+                    remainingGuesses--;
+                    hangMan.buildNewWord(tempSet.iterator().next(), word, chr);
+                    if(tempSet.size() == 1){
+                        System.out.println("You win!");
+                        return;
+                    }
+                }
+                catch (EvilHangmanGame.GuessAlreadyMadeException e) {
+                    System.out.println("You already used that letter. Please try again.\n");
+                }
             }
+            System.out.println("You lose!");
+            System.out.println("The word was: " + tempSet.iterator().next().toString());
+            in.close();
             
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             System.out.println("USAGE: java EvilHangman wordLength or guesses incorrect values");
+            e.printStackTrace();
             return;
         }
+    }
+    
+    void buildNewWord(String str, String word, char guess) {
+        StringBuilder wordDash = new StringBuilder(word);
+        
+        for(int i = 0; i < str.length(); i ++){
+            if(str.charAt(i) == guess){
+                wordDash.replace(i, i, str);
+            }
+        }
+        
     }
 }

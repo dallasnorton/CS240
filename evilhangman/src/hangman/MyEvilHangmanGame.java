@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 
 public class MyEvilHangmanGame implements EvilHangmanGame{
 
-    String tempDictionaryWord = null;
-    Set<String> dictionary = null;
-    UsedLetters usedLetters = null;
-    Map<String, Set<String>> wordMap = null;
+    private String tempDictionaryWord;
+    private Set<String> dictionary;
+    private UsedLetters usedLetters;
+    private Map<String, Set<String>> wordMap;
     
     public MyEvilHangmanGame (){
         tempDictionaryWord = null;
@@ -20,9 +20,13 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
         wordMap = new TreeMap(); 
     }
     
+    public UsedLetters getUsedLetters() {
+        return usedLetters;
+    }
+    
     @Override
     public void startGame(File dictionaryFile, int wordLength) {
-        dictionary = null;
+//        dictionary = null;
         Scanner sc;
         try {
             sc = new Scanner(dictionaryFile).useDelimiter("\\s+");
@@ -32,6 +36,7 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
                     dictionary.add(tempDictionaryWord);
                 }
             }
+            sc.close();
         }
         catch (FileNotFoundException ex) {
             Logger.getLogger(MyEvilHangmanGame.class.getName()).log(Level.SEVERE, null, ex);
@@ -40,22 +45,28 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
 
     @Override
     public Set<String> makeGuess(char guess) throws GuessAlreadyMadeException {
-        Set<String> bucket = new TreeSet();
+        Set<String> bucket = new TreeSet<String>();
+        wordMap = new TreeMap();
         if (usedLetters.contains(guess)) {
-//            throw(GuessAlreadyMadeException);
-            System.out.println("You already used that letter. Please try again.\n");
+            throw new GuessAlreadyMadeException();
         }
         usedLetters.add(guess);
         
-        String key = null;
+        String key = "";
         for(String str : dictionary){
             key = convertToDashedString(str, guess);
-            
             bucket = wordMap.get(key);
-            bucket.add(str);
-            wordMap.put(key, bucket);
+
+            if(bucket == null){
+                Set<String> tempSet = new TreeSet();
+                tempSet.add(str);
+                wordMap.put(key, tempSet);
+            }
+            else{            
+                bucket.add(str);
+                wordMap.put(key, bucket);
+            }
         }
-        
         
         int biggest = 0;
         for(Map.Entry<String, Set<String>> entry : wordMap.entrySet()){
@@ -64,132 +75,12 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
                 bucket =  entry.getValue();
             }
         }
-//        bucket = setNewDictionary(guess);
-        
+        dictionary = bucket;
         return bucket;
     }
     
-//    public Set<String> setNewDictionary(char guess){
-//        Set<String> returnSet = new TreeSet();
-//        Set tempSet = wordMap.entrySet();
-//        Map.Entry<String, Set<String>> largestEntry = null;                
-//        for(Iterator i = tempSet.iterator();i.hasNext();){
-//            largestEntry = (Map.Entry)i.next();
-//        }
-//                
-//        String keyValue
-//        int biggest = 0;
-//        for(Map.Entry<String, Set<String>> entry : wordMap.entrySet()){
-//            if(entry.getValue().size() > biggest){
-//                biggest = entry.getValue().size();
-//                returnSet =  entry.getValue();
-//
-//            }
-            
-//            if(entry.getValue().size() > largestEntry.getValue().size()){
-//                largestEntry = entry;
-//                continue;
-//            }
-//            if(entry.getValue().size() == largestEntry.getValue().size()){
-//                String largeStr = largestEntry.getKey();
-//                String entryStr = entry.getKey();
-//                
-//                if(largeStr.contains(Character.toString(guess)) && !entryStr.contains(Character.toString(guess))){
-//                    largestEntry = entry;
-//                    continue;
-//                }
-//                else{
-//                    if(largeStr.contains(Character.toString(guess)) && entryStr.contains(Character.toString(guess))){
-//                        //next check
-//                        int largeStrCount = getCountForNumbersOfTimesCharsInWord(largeStr, guess);
-//                        int entryStrCount = getCountForNumbersOfTimesCharsInWord(entryStr, guess);
-//                        if(largeStrCount > entryStrCount){
-//                            largestEntry = entry;
-//                        }
-//                        else{
-//                            if(largeStrCount == entryStrCount){
-//                                //next check - get rightmost guess letter
-//                                int largeRightIndex = getRightMostIndex(largeStr, guess);
-//                                int entryRightIndex = getRightMostIndex(entryStr, guess);
-//                                if(entryRightIndex > largeRightIndex){
-//                                    largestEntry = entry;
-//                                    continue;
-//                                }
-//                                else{
-//                                    if(entryRightIndex == largeRightIndex){
-//                                        //next check - get next rightmost guess letter
-//                                        int nextLargeRightIndex = getNextRightMostIndex(largeStr, guess, largeRightIndex);
-//                                        int nextEntryRightIndex = getNextRightMostIndex(entryStr, guess, entryRightIndex);
-//                                        if(nextEntryRightIndex > nextLargeRightIndex){
-//                                            largestEntry = entry;
-//                                            continue;
-//                                        }
-//                                        else if(nextLargeRightIndex > nextEntryRightIndex){
-//                                            continue;
-//                                        }
-//                                        else{
-//                                            keepChecking(largeStr, entryStr, largeRightIndex, entryRightIndex, nextLargeRightIndex, nextEntryRightIndex, guess);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            return returnSet;
-//        }
-    
-//    public void keepChecking(String largeStr, String entryStr, int largeRightIndex, int entryRightIndex,int nextLargeRightIndex, int nextEntryRightIndex, char guess){
-//        largeRightIndex = nextLargeRightIndex;
-//        entryRightIndex = nextEntryRightIndex;
-//        nextLargeRightIndex = getNextRightMostIndex(largeStr, guess, largeRightIndex);
-//        nextEntryRightIndex = getNextRightMostIndex(entryStr, guess, entryRightIndex);
-//        
-//        if(true){
-//            
-//        }
-//        else{
-//            keepChecking(largeStr, entryStr, largeRightIndex, entryRightIndex, nextLargeRightIndex, nextEntryRightIndex, guess);
-//        }
-//    }
-//    
-//    public int getNextRightMostIndex(String str, char guess, int index){
-//        char[] ary = str.toCharArray();
-//        int rightIndex = -1;
-//        for(int i = ary.length; i > 0; i--){
-//            if(ary[i] == guess && rightIndex > -1 && i != index){
-//                rightIndex = i;
-//                break;
-//            }
-//        }
-//        return rightIndex;
-//    }
-//    public int getRightMostIndex(String str, char guess){
-//        char[] ary = str.toCharArray();
-//        int rightIndex = -1;
-//        for(int i = ary.length; i > 0; i--){
-//            if(ary[i] == guess && rightIndex > -1){
-//                rightIndex = i;
-//                break;
-//            }
-//        }
-//        return rightIndex;
-//    }
-//    
-//    public int getCountForNumbersOfTimesCharsInWord(String str, char guess){
-//        int count = 0;
-//        for(char c : str.toCharArray()){
-//            if(c == guess){
-//                count++;
-//            } 
-//        } 
-//        return count;
-//    }
-    
     public String convertToDashedString(String str, char guess){
         StringBuilder dashStr = new StringBuilder();
-        
         for(char c : str.toCharArray()){
             if(c == guess){
                 dashStr.append(c);
@@ -198,10 +89,8 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
                 dashStr.append('-');
             }   
         }      
-        
         return dashStr.toString();
     }
-    
     
     class UsedLetters {
         Set<Character> used = new HashSet<Character>();
@@ -213,10 +102,10 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
         public boolean contains(char c) {
             return used.contains(c);
         }
-
+            
+        @Override
         public String toString() {
             String str = "";
-
             Iterator<Character> iter = used.iterator();
             boolean firstChar = true;
             while (iter.hasNext()) {
@@ -226,7 +115,6 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
                 str += iter.next();
                 firstChar = false;
             }
-
             return str;
         }
     }
