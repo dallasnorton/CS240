@@ -10,7 +10,7 @@ public class Evilhangman {
         int wordLength = -1;
         String filePath = null;
         Set<String> tempSet = new TreeSet<String>();
-        String word = "";
+//        String word = "";
         Evilhangman hangMan = new Evilhangman();
         
         try {
@@ -22,6 +22,10 @@ public class Evilhangman {
                 return;
             }
             
+            StringBuilder word = new StringBuilder();
+            for(int i = 0; i < wordLength; i++){
+                word.append("-");
+            }
             MyEvilHangmanGame hangManGame = new MyEvilHangmanGame();
             hangManGame.startGame(new File(filePath), wordLength);
             
@@ -44,9 +48,26 @@ public class Evilhangman {
 
                 try{
                     tempSet = hangManGame.makeGuess(chr);
-                    remainingGuesses--;
-                    hangMan.buildNewWord(tempSet.iterator().next(), word, chr);
-                    if(tempSet.size() == 1){
+//                    if(!word.toString().equals(Character.toString(chr))){
+//                        remainingGuesses--;
+//                    }
+
+//                    word = hangMan.buildNewWord(tempSet.iterator().next(), word, chr);
+                    
+                    boolean flag = false;            
+
+                    for(int i = 0; i < tempSet.iterator().next().length(); i ++){
+                        if(tempSet.iterator().next().charAt(i) == chr){
+                            flag = true;
+                            word.replace(i, i+1, Character.toString(chr));
+                        }
+                    }
+                    if(!flag){
+                        remainingGuesses--;
+                    }
+                    
+                    
+                    if(tempSet.size() == 1 && word.toString().equals(tempSet.iterator().next())){
                         System.out.println("You win!");
                         return;
                     }
@@ -67,14 +88,23 @@ public class Evilhangman {
         }
     }
     
-    void buildNewWord(String str, String word, char guess) {
-        StringBuilder wordDash = new StringBuilder(word);
+    StringBuilder buildNewWord(String setWord, StringBuilder word, char guess) {
         
-        for(int i = 0; i < str.length(); i ++){
-            if(str.charAt(i) == guess){
-                wordDash.replace(i, i, str);
+        
+//        if(!word.toString().equals(Character.toString(chr))){
+//            remainingGuesses--;
+//        }
+        boolean flag = false;            
+                    
+        for(int i = 0; i < setWord.length(); i ++){
+            if(setWord.charAt(i) == guess){
+                flag = true;
+                word.replace(i, i, Character.toString(guess));
             }
         }
-        
+//        if(!flag){
+//            remainingGuesses--;
+//        }
+        return word;
     }
 }
