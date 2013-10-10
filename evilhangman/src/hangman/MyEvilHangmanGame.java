@@ -26,7 +26,6 @@ public class MyEvilHangmanGame implements EvilHangmanGame{
     
     @Override
     public void startGame(File dictionaryFile, int wordLength) {
-//        dictionary = null;
         Scanner sc;
         try {
             sc = new Scanner(dictionaryFile).useDelimiter("\\s+");

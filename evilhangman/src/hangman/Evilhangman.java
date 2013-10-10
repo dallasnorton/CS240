@@ -10,7 +10,6 @@ public class Evilhangman {
         int wordLength = -1;
         String filePath = null;
         Set<String> tempSet = new TreeSet<String>();
-//        String word = "";
         Evilhangman hangMan = new Evilhangman();
         
         try {
@@ -48,11 +47,6 @@ public class Evilhangman {
 
                 try{
                     tempSet = hangManGame.makeGuess(chr);
-//                    if(!word.toString().equals(Character.toString(chr))){
-//                        remainingGuesses--;
-//                    }
-
-//                    word = hangMan.buildNewWord(tempSet.iterator().next(), word, chr);
                     
                     boolean flag = false;            
 
@@ -86,25 +80,5 @@ public class Evilhangman {
             e.printStackTrace();
             return;
         }
-    }
-    
-    StringBuilder buildNewWord(String setWord, StringBuilder word, char guess) {
-        
-        
-//        if(!word.toString().equals(Character.toString(chr))){
-//            remainingGuesses--;
-//        }
-        boolean flag = false;            
-                    
-        for(int i = 0; i < setWord.length(); i ++){
-            if(setWord.charAt(i) == guess){
-                flag = true;
-                word.replace(i, i, Character.toString(guess));
-            }
-        }
-//        if(!flag){
-//            remainingGuesses--;
-//        }
-        return word;
     }
 }
